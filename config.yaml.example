@@ -1,0 +1,53 @@
+# ==============================================================================
+# AI-AGENT CHAOS ENGINE — PUBLIC TEMPLATE CONFIGURATION
+# FILE: config.yaml.example
+# ==============================================================================
+#
+# INSTRUCTIONS:
+#   1. Copy this file:  cp config.yaml.example config.yaml
+#   2. Add config.yaml to .gitignore BEFORE editing.
+#   3. Replace every placeholder value (marked with CHANGE_ME) with real values.
+#
+# FAIL-CLOSED GUARANTEE:
+#   The orchestrator validates all fields at startup. If any value still contains
+#   the string "CHANGE_ME" or matches a known placeholder pattern, the process
+#   will refuse to start and exit with a non-zero status code.
+#   This prevents accidental deployment of unconfigured instances.
+#
+# NEVER commit config.yaml to any public or shared repository.
+# NEVER commit real hostnames, tokens, API keys, or internal service names.
+# ==============================================================================
+
+orchestrator:
+  # CHANGE_ME: Replace with your Kubernetes deployment label for the agent workload.
+  # Example pattern: "<team>-<service>-agent" — do not use real service names here.
+  target_app_label: "CHANGE_ME"
+
+  # CHANGE_ME: Replace with the internal ingress URL for your agent gateway.
+  # Format: http(s)://<host>:<port>/v1/chat
+  # Do not expose real hostnames, cluster DNS names, or internal IPs in public configs.
+  gateway_ingress_url: "CHANGE_ME"
+
+  # SLA timers for invariant validation (seconds).
+  # Adjust based on your p99 latency baseline. These are safe defaults.
+  escrow_sla_seconds: 10
+  panic_threshold_seconds: 60
+
+egress_protection:
+  # CHANGE_ME: Replace with the domain of your upstream LLM provider.
+  # Example: "api.openai.com" — use your actual provider, not a placeholder.
+  provider_domain: "CHANGE_ME"
+
+  circuit_breaker:
+    # Hard limits enforced by the Egress layer circuit breaker.
+    # Tune to match your upstream provider's rate limits and your cluster capacity.
+    max_connections: 100
+    pending_requests: 10
+    consecutive_5xx_failures: 3
+
+telemetry:
+  # CHANGE_ME: Replace with your internal Prometheus scrape endpoint.
+  # Do not expose real monitoring hostnames or internal network topology here.
+  prometheus_endpoint: "CHANGE_ME"
+  metrics_path: "/metrics"
+  scraping_interval_seconds: 10

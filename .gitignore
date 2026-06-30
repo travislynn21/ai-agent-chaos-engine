@@ -1,0 +1,33 @@
+# CRITICAL: Never commit real operational config
+config.yaml
+
+# IDE and OS noise
+.idea/
+.vscode/
+.DS_Store
+*.log
+*.swp
+*.swo
+
+# Runtime artifacts
+*.pyc
+__pycache__/
+node_modules/
+dist/
+build/
+.env
+.env.*
+
+# Secrets and certificates
+secrets.*
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Temporary exports and archives
+*.tar.gz
+*.zip
+*.tar

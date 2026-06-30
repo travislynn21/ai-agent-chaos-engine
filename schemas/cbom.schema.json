@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: BSL-1.1
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://justjackinit.net/schemas/cbom.schema.json",
+  "title": "Cryptographic Bill of Materials (CBOM) Schema",
+  "type": "object",
+  "required": ["cbomVersion", "component", "dependencies"],
+  "properties": {
+    "cbomVersion": { "type": "string" },
+    "component": {
+      "type": "object",
+      "required": ["name", "version", "type"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "type": { "type": "string", "enum": ["application", "container", "library", "service-mesh"] }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["assetId", "algorithm", "role", "library"],
+        "properties": {
+          "assetId": { "type": "string" },
+          "algorithm": { "type": "string" },
+          "role": { "type": "string", "enum": ["key-establishment", "digital-signature", "encryption", "hash"] },
+          "library": { "type": "string" },
+          "fipsCompliance": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}
