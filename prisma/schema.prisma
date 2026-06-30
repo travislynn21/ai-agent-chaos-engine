@@ -1,0 +1,52 @@
+// Append this to your existing schema.prisma file
+model TokenEstimate {
+  id                    String   @id @default(cuid())
+  provider              String
+  model                 String
+  engineVersion         String   
+  pricingVersion        String
+  payloadHash           String   
+  promptHash            String
+  systemHash            String?
+  toolsHash             String?
+  estimatedInputStandard Int
+  estimatedCacheRead    Int?
+  estimatedCacheWrite   Int?
+  estimatedOutput       Int
+  estimatedCostUsd      Decimal  @db.Decimal(12, 8)
+  contextLimitPct       Decimal  @db.Decimal(6, 3)
+  cacheEligibilityReason String?
+  createdAt             DateTime @default(now())
+
+  @@index([provider, model])
+  @@index([payloadHash])
+  @@index([promptHash])
+}
+
+model TokenReconcile {
+  id                    String   @id @default(cuid())
+  requestId             String   @unique 
+  provider              String
+  model                 String
+  engineVersion         String
+  pricingVersion        String
+  payloadHash           String
+  promptHash            String
+  systemHash            String?
+  toolsHash             String?
+  estimatedCostUsd      Decimal  @db.Decimal(12, 8)
+  actualInputStandard   Int
+  actualCacheRead       Int?
+  actualCacheWrite      Int?
+  actualOutput          Int
+  actualCostUsd         Decimal  @db.Decimal(12, 8)
+  estimateDeltaUsd      Decimal  @db.Decimal(12, 8)
+  estimateDeltaPct      Decimal  @db.Decimal(8, 4)
+  driftReason           String   
+  rawUsageJson          Json
+  createdAt             DateTime @default(now())
+
+  @@index([provider, model, createdAt])
+  @@index([payloadHash, createdAt])
+  @@index([promptHash, createdAt])
+}
